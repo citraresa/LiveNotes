@@ -108,7 +108,6 @@ class _HomePageState extends State<HomePage> {
                       Navigator.of(context).pop();
                     }
                   },
-                  // Label tombol menyesuaikan mode Tambah atau Edit
                   child: Text(documentSnapshot == null ? "Simpan Catatan" : "Perbarui Catatan"),
                 )
               ],
@@ -130,17 +129,14 @@ class _HomePageState extends State<HomePage> {
       body: StreamBuilder(
         stream: _notes.orderBy('timestamp', descending: true).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          // Kondisi 1: Masih Loading
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          // Kondisi 2: Data Kosong
           if (snapshot.data!.docs.isEmpty) {
             return const Center(child: Text("Belum ada catatan."));
           }
 
-          // Kondisi 3: Ada Data -> Tampilkan ListView
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
@@ -149,7 +145,6 @@ class _HomePageState extends State<HomePage> {
               return Card(
                 margin: const EdgeInsets.all(8),
                 child: ListTile(
-                  // TAMBAHKAN ONTAP DI SINI UNTUK FITUR EDIT
                   onTap: () => _showForm(context, document),
                   title: Text(document['title'],
                       style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -168,7 +163,6 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        // Panggil _showForm tanpa parameter (mode Tambah Baru)
         onPressed: () => _showForm(context),
         child: const Icon(Icons.add),
       ),
